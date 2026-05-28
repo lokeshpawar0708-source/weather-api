@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <title>Weather App</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body.dark {
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0,255,255,0.3);
+            border: none;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            color: white;
+            border-radius: 20px;
+        }
+        
+        .location-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 5px auto;
+            padding: 12px 20px;
+            border-radius: 25px;
+            width: 15rem;
+            border: none;
+            font-size: 16px;
+            color: white;
+            background: linear-gradient(135deg, #5b86e5, #36d1dc);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .location-btn .icon {
+            width: 20px;
+            height: 20px;
+            fill: white;
+        }
+
+        .location-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .toggle-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+    </style>
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.9.10/dist/dotlottie-wc.js" type="module"></script>    
+</head>
+
+<body class="dark">
+
+<button onclick="toggleMode()" class="btn btn-light toggle-btn">🌙 / ☀️</button>
+
+<div class="container text-center mt-5">
+     
+    <img src="https://uxwing.com/wp-content/themes/uxwing/download/weather/weather-icon.png"
+     alt="Placeholder Image"
+     width="100"
+     style="position: absolute; top: 20px; left: 550px;">
+
+    <h1 class="mb-4" style="margin-left: 40px;"> Weather App</h1>
+
+    <form method="POST" class="d-flex justify-content-center mb-4">
+        <input type="text" name="city" class="form-control w-25 me-2" placeholder="Enter city">
+        <button class="btn btn-primary">Search</button>
+    </form>
+
+    <button onclick="getLocation()" class="location-btn">
+        <svg class="icon" viewBox="0 0 24 24" >
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z"/>
+        </svg>
+        <span>Use My Location</span>
+    </button>
+
+
+    {% if weather %}
+    <div class="card mx-auto shadow p-4" style="width: 20rem;">
+        <h3>{{ weather.city }}</h3>
+
+        {% if weather.animation == "sun_day" %}
+        <dotlottie-wc
+        src="https://lottie.host/ba66b647-9c15-4529-b851-39995e0998bc/bucxZMH2MF.lottie"
+        style="width: 200px;height: 200px;margin:auto;display:block;"
+        autoplay
+        loop
+        ></dotlottie-wc>
+
+        {% elif weather.animation == "clear_night" %}
+        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_x62chJ.json"
+        style="width:200px;height:200px;margin:auto;display:block;"
+        loop autoplay></lottie-player>
+
+        {% elif weather.animation == "cloud_day" %}
+        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_jmBauI.json"
+        style="width:200px;height:200px;margin:auto;display:block;"
+        loop autoplay></lottie-player>
+
+        {% elif weather.animation == "cloud_night" %}
+        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_qp1q7mct.json"
+        style="width:200px;height:200px;margin:auto;display:block;"
+        loop autoplay></lottie-player>
+
+        {% elif weather.animation == "overcast" %}
+        <dotlottie-wc
+        src="https://lottie.host/7b270445-44c9-45a2-8fe3-335b98ec30a1/tClkSS58xN.lottie"
+        style="width: 200px;height: 200px;margin:auto;display: block;"
+        autoplay
+        loop
+        ></dotlottie-wc>
+
+        {% elif weather.animation == "rain" %}
+        <dotlottie-wc
+        src="https://lottie.host/01bdd5a3-6452-4ba7-81f4-8b66beddb054/r5rRhJllzi.lottie"
+        style="width: 200px;height: 200px;margin: auto;display: block;"
+        autoplay
+        loop
+        ></dotlottie-wc>
+
+        {% elif weather.animation == "storm" %}
+        <dotlottie-wc
+        src="https://lottie.host/73dc72d6-bcf3-43a7-bfd0-63eb193e1e2d/wX49tIjxVc.lottie"
+        style="width: 200px;height: 200px;margin: auto;display: block;"
+        autoplay
+        loop
+        ></dotlottie-wc>
+
+        {% elif weather.animation == "snow" %}
+        <dotlottie-wc
+        src="https://lottie.host/971094b0-b143-4412-82b8-de4b10e796b7/ccB0kBaAwU.lottie"
+        style="width: 200px;height: 200px;margin: auto;display: block;"
+        autoplay
+        loop
+        ></dotlottie-wc>
+
+        {% else %}
+          <p style="color:white;">No animation found</p>
+        {% endif %}
+
+        <h1>{{ weather.temp }}°C</h1>
+        <p>{{ weather.desc }}</p>
+        <p>💧 Humidity: {{ weather.humidity }}%</p>
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+function toggleMode() {
+    document.body.classList.toggle("dark");
+}
+</script>
+ 
+<script>
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      let lat = position.coords.latitude;
+      let lon = position.coords.longitude;
+      console.log(lat);
+      console.log(lon);
+      
+      window.location.href = `/location?lat=${lat}&lon=${lon}`;
+    },
+    function(error){
+      alert("Error: "+ error.message);
+      console.log(error);
+    });
+  } else {
+    alert("Geolocation not supported");
+  }
+}
+</script>
+
+</body>
+</html>
